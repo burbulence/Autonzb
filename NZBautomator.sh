@@ -133,7 +133,7 @@ if [ "$SickBeard" == 1 ]; then
       cd "$sickdata"
       git pull  https://github.com/SiCKRAGETV/SickRage.git
    else
-      git clone https://github.com/SiCKRAGETV/SickRage.git	  "$sickdata"
+       pip install sickrage
       mkdir -p -m 777 "$sickconfig"
    sleep 2
    fi
