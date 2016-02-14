@@ -131,9 +131,9 @@ fi
 if [ "$SickBeard" == 1 ]; then
    if [ -d "$sickdata" ]; then 
       cd "$sickdata"
-      git pull  https://github.com/SiCKRAGETV/SickRage.git
+      git pull  https://github.com/SickRage/SickRage.git
    else
-      git clone https://github.com/SiCKRAGETV/SickRage.git	  "$sickdata"
+      git clone https://github.com/SickRage/SickRage.git	  "$sickdata"
       mkdir -p -m 777 "$sickconfig"
    sleep 2
    fi
