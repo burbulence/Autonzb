@@ -2,7 +2,7 @@
 . /ffp/start/config.cfg
 
 ####################################################################################################
-#Version 0.98
+#Version 0.99a
 #############
 # This script 'should' download install and configure your folder structure to enable SABnzbd, 
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
@@ -13,12 +13,6 @@
 # should one be available.
 ############################################################################################################
 ######################################Do not edit the lines below##########################################
-
-#if [ "$bindmount" == 1 ];then
-#python="/usr/bin/python"
-#else
-#python="/ffp/bin/python"
-#fi
 
 ###############################
 #get current SAB version number
@@ -55,15 +49,6 @@ if [ ! -d "$sabdata" ]
 		sab_port=`grep -w -m 1 port $sabconfig | cut -d ' ' -f 3 | sed s/'""'//`;
 		fi
 fi
-
-#########################################################################################################################
-#bindmount python
-#this binds ffp/bin python to usr/bin python - used by postprocessing scripts so no manual updating of the hashbang is needed
-#########################################################################################################################
-#
-#if [ "$bindmount" == 1 ];then
-#   mount --bind /ffp/bin/python2.7 /usr/bin/python
-#fi
 
 ################################
 #install SSL Certificates
@@ -131,9 +116,9 @@ fi
 if [ "$SickBeard" == 1 ]; then
    if [ -d "$sickdata" ]; then 
       cd "$sickdata"
-      git pull  https://github.com/SiCKRAGETV/SickRage.git
+      git pull  https://github.com/SickRage/SickRage.git
    else
-       pip install sickrage
+      git clone  https://github.com/SickRage/SickRage.git 
       mkdir -p -m 777 "$sickconfig"
    sleep 2
    fi
