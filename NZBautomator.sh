@@ -226,9 +226,7 @@ sleep 2
    $python "$couchdata"/CouchPotato.py --daemon --data_dir $CCONFIG_DIR --config $CCONFIG_DIR/settings.conf --pid_file $CPID_FILE
    fi
 
-
-
-sleep 5
+sleep 2
 
 if [ "$SickBeard" == 1 ]; then
 
@@ -258,27 +256,37 @@ sleep 2
    $python "$sickdata"/SickBeard.py --datadir "$sickconfig" --config "$sickconfig"/config.ini -d --pidfile $SPID_FILE
    fi
 
-
-sleep 5
+sleep 2
 
 if [ "$Headphones" == 1 ]; then
-   if pgrep -f Headphones.py
-      then
-      if [[ `grep -w -m 1 enable_https $headconfig/config.ini | cut -d ' ' -f 3` == 1 ]]; then
-         wget -q --delete-after https://localhost:$head_port/api?apikey=$head_api&cmd=shutdown
-      else
-         wget -q --delete-after http://localhost:$head_port/api?apikey=$head_api&cmd=shutdown
-      fi
 
-sleep 5
-
-   $python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini  -d
-   else
-   $python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini -d 
-   fi
-   else
-   echo "Headphones not Installed"
+if [ -f $HPID_FILE ]; then
+      #grab pid from pid file
+      Pid=$(/bin/cat $HPID_FILE)
+      i=0
+      kill $Pid
+      echo -n " Waiting for $HPKG_NAME to shut down: "
+      while [ -d /proc/$Pid ]; do
+         sleep 1
+         let i+=1
+         /bin/echo -n "$i, "
+         if [ $i = 45 ]; then
+            echo -n "Tired of waiting, killing $HPKG_NAME now"
+            kill -9 $Pid
+            rm -f $HPID_FILE
+            echo "$HPKG_NAME Shutdown"
+         fi
+      done
+      rm -f $HPID_FILE
 fi
+      
+sleep 2
+
+   echo -n "Starting $HPKG_NAME"
+   $python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini -d --pidfile $HPID_FILE
+   fi
+
+sleep 2
 
 if [ "$Mylar" == 1 ]; then
    if pgrep -f Mylar.py
