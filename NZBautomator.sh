@@ -279,30 +279,38 @@ if [ -f $HPID_FILE ]; then
       done
       rm -f $HPID_FILE
 fi
-      
 sleep 2
 
    echo -n "Starting $HPKG_NAME"
    $python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini -d --pidfile $HPID_FILE
-   fi
+fi
 
 sleep 2
 
 if [ "$Mylar" == 1 ]; then
-   if pgrep -f Mylar.py
-      then
-      if [[ `grep -w -m 1 enable_https $mylarconfig/config.ini | cut -d ' ' -f 3` == 1 ]]; then
-         wget -q --delete-after https://localhost:$mylar_port/api?apikey=$mylar_api&cmd=shutdown
-      else
-         wget -q --delete-after http://localhost:$mylar_port/api?apikey=$mylar_api&cmd=shutdown
-      fi
 
-sleep 5
+if [ -f $MPID_FILE ]; then
+      #grab pid from pid file
+      Pid=$(/bin/cat $MPID_FILE)
+      i=0
+      kill $Pid
+      echo -n " Waiting for $MPKG_NAME to shut down: "
+      while [ -d /proc/$Pid ]; do
+         sleep 1
+         let i+=1
+         /bin/echo -n "$i, "
+         if [ $i = 45 ]; then
+            echo -n "Tired of waiting, killing $MPKG_NAME now"
+            kill -9 $Pid
+            rm -f $MPID_FILE
+            echo "$MPKG_NAME Shutdown"
+         fi
+      done
+      rm -f $MPID_FILE
+fi
+sleep 2
 
-   $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d
-   else
-   $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini -d 
-   fi
-   else
-   echo "Mylar not Installed"
+   echo -n "Starting $MPKG_NAME"
+   $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d --pidfile $SPID_FILE
+
 fi
