@@ -5,3 +5,8 @@ Please see the forum thread for the script at http://forum.nas-central.org/viewt
 
 This is still a work in progress and V0.1 is an initial port from my previous script which was based an the same Nas running FFP.
 
+Istall instructions
+
+Download Files from Github
+place config.cfg into /opt/usr/etc/config with read/write attributes.
+
