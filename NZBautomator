@@ -240,7 +240,7 @@ sleep 2
 
 sleep 2
 
-if [ "$SickBeard" == 1 ]; then
+if [ "$SickRage" == 1 ]; then
 
 if [ -f $SPID_FILE ]; then
       #grab pid from pid file
