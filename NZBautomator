@@ -208,6 +208,28 @@ sleep 2
    echo "SABnzbd not Installed"
 fi
 
+if [ "$nzbget" == 1 ]; then
+
+  if [ -f $NPID_FILE ]; then
+      #grab pid from pid file
+      Pid=$(/bin/cat $NPID_FILE)
+      i=0
+      sh ./"S75nzbget stop"
+      echo -n " Waiting for $CPKG_NAME to shut down: "
+      while [ -d /proc/$Pid ]; do
+         sleep 1
+         let i+=1
+         /bin/echo -n "$i, "
+         echo "$CPKG_NAME Shutdown"
+      done
+      rm -f $NPID_FILE
+  fi
+ sleep 2
+
+ sh ./"S75nzbget start"
+
+fi
+
 if [ "$CouchPotato" == 1 ]; then
    
 if [ -f $CPID_FILE ]; then
