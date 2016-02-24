@@ -44,11 +44,12 @@ cd "$useradmin"
 if [ ! -d "$sabdata" ]
         then
             mkdir -p -m 777 "$sabdata"
-            mkdir -p -m 777 "$useradmin"/configuration/sabnzbd
+            mkdir -p -m 777 "$configdir"/sabnzbd
             mkdir -p -m 777 "$useradmin"/download/complete/movie 
             mkdir -p -m 777 "$useradmin"/download/complete/tv
             mkdir -p -m 777 "$useradmin"/download/incomplete
             chmod -R 777 "$useradmin"
+            chmod -R 777 "$configdir"
 
 	else
 		if [ `grep -w -m 1 enable_https $sabconfig | cut -d ' ' -f 3` == 1 ] ;
