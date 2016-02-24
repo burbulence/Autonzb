@@ -2,7 +2,7 @@
 . /ffp/start/config.cfg
 
 ####################################################################################################
-#Version 0.99a
+#Entware-ng Version 0.1 
 #############
 # This script 'should' download install and configure your folder structure to enable SABnzbd, 
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
@@ -14,6 +14,14 @@
 ############################################################################################################
 ######################################Do not edit the lines below##########################################
 
+###############################
+#install packages
+###############################
+if ["$packageupdate" ==1 ]; then
+
+opkg install python python-pip pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils curl unrar
+sed -i 's/packageupdate=1 /packageupdate=0/g' /opt/usr/etc/config/config.cfg
+fi
 ###############################
 #get current SAB version number
 ###############################
@@ -174,29 +182,30 @@ fi
 #################################
 if [ "$SABnzbd" == 1 ]; then
 
-   if pgrep -f SABnzbd.py
-	then
-	if [[ `grep -w -m 1 enable_https $sabconfig | cut -d ' ' -f 3` == 1 ]]; then
-		wget -q --delete-after "https://localhost:$sab_sslport/sabnzbd/api?mode=shutdown&ma_username=$sab_user&ma_password=$sab_pass&apikey=$sab_api"
-		else
-		wget -q --delete-after "http://localhost:$sab_port/sabnzbd/api?mode=shutdown&ma_username=$sab_user&ma_password=$sab_pass&apikey=$sab_api"
+	if [ -f $SABPID_FILE ]; then
+      #grab pid from pid file
+      Pid=$(/bin/cat $SABPID_FILE)
+      i=0
+      kill $Pid
+      echo -n " Waiting for $CPKG_NAME to shut down: "
+      while [ -d /proc/$Pid ]; do
+         sleep 1
+         let i+=1
+         /bin/echo -n "$i, "
+         if [ $i = 45 ]; then
+            echo -n "Tired of waiting, killing $CPKG_NAME now"
+            kill -9 $Pid
+            rm -f $SABPID_FILE
+            echo "$SABPKG_NAME Shutdown"
+         fi
+      done
+      rm -f $SABPID_FILE
 	fi
-sleep 5
+sleep 2
 	 $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" PYTHON_EGG_CACHE=/tmp
-	else
-		if [ -f "$sabconfig" ]
-			then
-			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
-			else
-			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8085 -f "$sabconfig" 
-                sleep 5
-		fi
-   fi
    else
    echo "SABnzbd not Installed"
 fi
-
-
 
 if [ "$CouchPotato" == 1 ]; then
    
@@ -222,8 +231,10 @@ fi
       
 sleep 2
 
-   echo -n "Starting $CPKG_NAME"
-   $python "$couchdata"/CouchPotato.py --daemon --data_dir $CCONFIG_DIR --config $CCONFIG_DIR/settings.conf --pid_file $CPID_FILE
+ $python "$couchdata"/CouchPotato.py --daemon --data_dir $CCONFIG_DIR --config $CCONFIG_DIR/settings.conf --pid_file $CPID_FILE
+   echo -n "$CPKG_NAME Started"
+      else
+   echo "Couchpotato not Installed"
    fi
 
 sleep 2
@@ -252,8 +263,11 @@ fi
       
 sleep 2
 
-   echo -n "Starting $SPKG_NAME"
+
    $python "$sickdata"/SickBeard.py --datadir "$sickconfig" --config "$sickconfig"/config.ini -d --pidfile $SPID_FILE
+echo -n "$SPKG_NAME Started"   
+      else
+   echo "SickRage not Installed"
    fi
 
 sleep 2
@@ -280,9 +294,10 @@ if [ -f $HPID_FILE ]; then
       rm -f $HPID_FILE
 fi
 sleep 2
-
-   echo -n "Starting $HPKG_NAME"
-   $python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini -d --pidfile $HPID_FILE
+$python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini  -d
+   echo -n "$HPKG_NAME Started"
+      else
+   echo "Headphones not Installed"
 fi
 
 sleep 2
@@ -307,10 +322,12 @@ if [ -f $MPID_FILE ]; then
          fi
       done
       rm -f $MPID_FILE
+
 fi
 sleep 2
 
-   echo -n "Starting $MPKG_NAME"
    $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d --pidfile $SPID_FILE
-
+   echo -n "$MPKG_NAME Started"
+      else
+   echo "Mylar not Installed"
 fi
