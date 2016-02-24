@@ -1,5 +1,5 @@
 #!/opt/bin/sh
-. /opt/usr/etc/config/config.cfg
+. /opt/etc/config/autonzb.conf
 
 ####################################################################################################
 #Entware-ng Version 0.1 
