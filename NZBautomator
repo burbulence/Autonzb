@@ -208,7 +208,7 @@ sleep 2
    echo "SABnzbd not Installed"
 fi
 
-if [ "$nzbget" == 1 ]; then
+if [ "$Nzbget" == 1 ]; then
 
   if [ -f $NPID_FILE ]; then
       #grab pid from pid file
