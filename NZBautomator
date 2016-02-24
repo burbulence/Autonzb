@@ -1,5 +1,5 @@
-#!/ffp/bin/sh
-. /ffp/start/config.cfg
+#!/opt/bin/sh
+. /opt/usr/etc/config/config.cfg
 
 ####################################################################################################
 #Entware-ng Version 0.1 
@@ -67,6 +67,14 @@ fi
 #	wget http://curl.haxx.se/ca/cacert.pem -O /ffp/etc/ssl/certs/cacert.pem
 #	git config --system http.sslcainfo /ffp/etc/ssl/certs/cacert.pem
 #fi
+
+################################
+#install nzbget
+################################
+
+if [ "$Nzbget" == 1 ]; then
+   opkg install nzbget
+fi
 
 ################################
 #install Sabnzbd
@@ -187,13 +195,13 @@ if [ "$SABnzbd" == 1 ]; then
       Pid=$(/bin/cat $SABPID_FILE)
       i=0
       kill $Pid
-      echo -n " Waiting for $CPKG_NAME to shut down: "
+      echo -n " Waiting for $SABPKG_NAME to shut down: "
       while [ -d /proc/$Pid ]; do
          sleep 1
          let i+=1
          /bin/echo -n "$i, "
          if [ $i = 45 ]; then
-            echo -n "Tired of waiting, killing $CPKG_NAME now"
+            echo -n "Tired of waiting, killing $SABPKG_NAME now"
             kill -9 $Pid
             rm -f $SABPID_FILE
             echo "$SABPKG_NAME Shutdown"
