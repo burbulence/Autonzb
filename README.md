@@ -15,4 +15,6 @@ place NZBautomator into /opt/etc/init.d (Note no file extension)
 
 chmod a+x /opt/etc/init.d/NZBautomator
 
+Start the script by rebooting the nas or run sh /opt/etc/init.d/NZBautomator start
+
  
