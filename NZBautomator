@@ -41,8 +41,7 @@ fi
 
 cd "$useradmin"
 
-if [ ! -d "$sabdata" ]
-        then
+if [ ! -d "$sabdata" ]; then
             mkdir -p -m 777 "$sabdata"
             mkdir -p -m 777 "$configdir"/sabnzbd
             mkdir -p -m 777 "$useradmin"/download/complete/movie 
@@ -50,14 +49,6 @@ if [ ! -d "$sabdata" ]
             mkdir -p -m 777 "$useradmin"/download/incomplete
             chmod -R 777 "$useradmin"
             chmod -R 777 "$configdir"
-
-	else
-		if [ `grep -w -m 1 enable_https $sabconfig | cut -d ' ' -f 3` == 1 ] ;
-		then
-		sab_port=`grep -w -m 1 https_port $sabconfig | cut -d ' ' -f 3 | sed s/'""'//`;
-		else
-		sab_port=`grep -w -m 1 port $sabconfig | cut -d ' ' -f 3 | sed s/'""'//`;
-		fi
 fi
 
 ################################
