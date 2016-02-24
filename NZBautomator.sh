@@ -20,7 +20,7 @@
 if ["$packageupdate" ==1 ]; then
 
 opkg install python python-pip pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils curl unrar
-sed -i 's/packageupdate=1 /packageupdate=0/g' /opt/usr/etc/config/config.cfg
+sed -i 's/packageupdate="1" /packageupdate="0"' /opt/usr/etc/config/config.cfg
 fi
 ###############################
 #get current SAB version number
