@@ -8,5 +8,8 @@ This is still a work in progress and V0.1 is an initial port from my previous sc
 Istall instructions
 
 Download Files from Github
-place config.cfg into /opt/usr/etc/config with read/write attributes.
+Place config.cfg into /opt/usr/etc/config with read/write attributes.
+place NZBautomator into /opt/etc/init.d (Note no file extension)
+chmod a+x /opt/etc/init.d/NZBautomator
 
+ 
