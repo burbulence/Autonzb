@@ -17,7 +17,7 @@
 ###############################
 #install packages
 ###############################
-if ["$packageupdate" ==1 ]; then
+if [ "$packageupdate" ==1 ]; then
 
 opkg update
 opkg install python python-pip pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils curl unrar
