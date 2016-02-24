@@ -54,11 +54,11 @@ fi
 #install SSL Certificates
 ################################
 
-if [ ! -f /ffp/etc/ssl/certs/cacert.pem ]
-	then
-	wget http://curl.haxx.se/ca/cacert.pem -O /ffp/etc/ssl/certs/cacert.pem
-	git config --system http.sslcainfo /ffp/etc/ssl/certs/cacert.pem
-fi
+#if [ ! -f /opt/etc/ssl/certs/cacert.pem ]
+#	then
+#	wget http://curl.haxx.se/ca/cacert.pem -O /ffp/etc/ssl/certs/cacert.pem
+#	git config --system http.sslcainfo /ffp/etc/ssl/certs/cacert.pem
+#fi
 
 ################################
 #install Sabnzbd
