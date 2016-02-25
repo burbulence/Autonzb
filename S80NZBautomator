@@ -21,7 +21,7 @@ if [ "$packageupdate" == 1 ]; then
 
 opkg update
 sleep 2
-opkg install python python-pip pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils curl unrar
+opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils unrar
 sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
 fi
 ###############################
