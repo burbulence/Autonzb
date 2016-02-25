@@ -7,7 +7,7 @@ This is still a work in progress and V0.1 is an initial port from my previous sc
 
 Istall instructions
 
-Download Files from Github
+Download Files from https://github.com/burbulence/Autonzb.git
 
 Place autonzb.conf into /opt/usr/etc/config with read/write attributes.
 
@@ -15,12 +15,12 @@ place NZBautomator into /opt/etc/init.d (Note no file extension)
 
 chmod a+x /opt/etc/init.d/NZBautomator
 
-Start the script by rebooting the nas or run sh /opt/etc/init.d/NZBautomator start
+Start the script by rebooting the nas or run "sh /opt/etc/init.d/NZBautomator start"
 
 
 Config Folders /opt/usr/etc/config
 
-nzbget config folder /opt/share/nzbget  (this can be changed to above folder after start up(I think!))
+nzbget config folder /opt/share/nzbget (this can be changed to above folder after start up)
 
 SAB SickRage Couchpotato Headphones Mylar data folders /opt/share
 
