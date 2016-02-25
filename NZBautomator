@@ -8,7 +8,7 @@
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
 # config.cfg by setting each to either 0 or 1.
 # It is configured to install the most up to date source code of the programs.
-# SickBeard CouchPotato Headphones and NzbtoMedia  download from GitHub therefore it is necessary to install GIT before running this script.
+# SickBeard CouchPotato Headphones and NzbtoMedia  download from GitHub therefore GIT will be installed
 # It has been written to complete a fresh install from scratch on first run of the script or to update the programs
 # should one be available.
 ############################################################################################################
@@ -20,8 +20,9 @@
 if [ "$packageupdate" == 1 ]; then
 
 opkg update
+sleep 2
 opkg install python python-pip pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git gcc bzip2 autoconf automake binutils curl unrar
-sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/usr/etc/config/config.cfg
+sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
 fi
 ###############################
 #get current SAB version number
@@ -52,21 +53,13 @@ if [ ! -d "$sabdata" ]; then
 fi
 
 ################################
-#install SSL Certificates
-################################
-
-#if [ ! -f /opt/etc/ssl/certs/cacert.pem ]
-#	then
-#	wget http://curl.haxx.se/ca/cacert.pem -O /ffp/etc/ssl/certs/cacert.pem
-#	git config --system http.sslcainfo /ffp/etc/ssl/certs/cacert.pem
-#fi
-
-################################
 #install nzbget
 ################################
 
 if [ "$Nzbget" == 1 ]; then
+  if [ "$packageupdate" == 1 ]; then
    opkg install nzbget
+  fi
 fi
 
 ################################
@@ -210,25 +203,25 @@ fi
 
 if [ "$Nzbget" == 1 ]; then
 
-  if [ -f $NPID_FILE ]; then
+  if [ -f $NPID_FILE ]; then   #/usr/local/zy-pkgs/opt/usr/etc/config/nzbget
       #grab pid from pid file
       Pid=$(/bin/cat $NPID_FILE)
       i=0
-      sh ./"S75nzbget stop"
-      echo -n " Waiting for $CPKG_NAME to shut down: "
-      while [ -d /proc/$Pid ]; do
+      sh $init/S75nzbget stop
+         while [ -d /proc/$Pid ]; do
          sleep 1
          let i+=1
          /bin/echo -n "$i, "
-         echo "$CPKG_NAME Shutdown"
       done
       rm -f $NPID_FILE
   fi
  sleep 2
 
- sh ./"S75nzbget start"
+ sh $init/S75nzbget start
 
 fi
+      
+sleep 2
 
 if [ "$CouchPotato" == 1 ]; then
    
