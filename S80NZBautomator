@@ -1,18 +1,18 @@
-#!/opt/bin/sh
+#!/bin/sh
 . /opt/etc/autonzb.conf
 
 ####################################################################################################
-#Entware-ng Version 0.1 
-#############
+#Entware-ng Version S80.1
+##############################
 # This script 'should' download install and configure your folder structure to enable SABnzbd, 
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
-# config.cfg by setting each to either 0 or 1.
+#autonzb.conf by setting each to either 0 or 1.
 # It is configured to install the most up to date source code of the programs.
 # SickBeard CouchPotato Headphones and NzbtoMedia  download from GitHub therefore GIT will be installed
 # It has been written to complete a fresh install from scratch on first run of the script or to update the programs
 # should one be available.
-############################################################################################################
-######################################Do not edit the lines below##########################################
+####################################################################################################
+####################################################################################################
 
 ###############################
 #install packages
@@ -36,9 +36,9 @@ sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'`
 
 fi
 
-##########################################################
-#create directories and retrieve required restart info
-##########################################################
+###############################
+#create directories
+###############################
 
 cd "$useradmin"
 
