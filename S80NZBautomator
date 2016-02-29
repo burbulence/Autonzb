@@ -342,7 +342,7 @@ if [ -f $MPID_FILE ]; then
 fi
 sleep 2
 
-   $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d --pidfile $SPID_FILE
+   $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d --pidfile $MPID_FILE
    echo -n "$MPKG_NAME Started"
       else
    echo "Mylar not Installed"
