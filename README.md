@@ -20,7 +20,7 @@ Start the script by rebooting the nas or run "sh /opt/etc/init.d/NZBautomator st
 
 Config Folders /opt/usr/etc/config
 
-nzbget config folder /opt/share/nzbget (this can be changed to above folder after start up)
+nzbget config folder /opt/share/nzbget
 
 SAB SickRage Couchpotato Headphones Mylar data folders /opt/share
 
