@@ -310,7 +310,7 @@ if [ -f $HPID_FILE ]; then
       rm -f $HPID_FILE
 fi
 sleep 2
-$python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini  -d
+$python "$headdata"/Headphones.py --datadir "$headconfig" --config "$headconfig"/config.ini  -d --pidfile $HPID_FILE
    echo -n "$HPKG_NAME Started"
       else
    echo "Headphones not Installed"
