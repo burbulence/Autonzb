@@ -189,11 +189,10 @@ if [ "$SABnzbd" == 1 ]; then
          if [ $i = 45 ]; then
             echo -n "Tired of waiting, killing $SABPKG_NAME now"
             kill -9 $Pid
-            rm -f $SABPID_FILE
-            echo "$SABPKG_NAME Shutdown"
          fi
       done
       rm -f $SABPID_FILE
+      echo "$SABPKG_NAME Shutdown"
 	fi
 sleep 2
 	 $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" PYTHON_EGG_CACHE=/tmp
@@ -238,11 +237,10 @@ if [ -f $CPID_FILE ]; then
          if [ $i = 45 ]; then
             echo -n "Tired of waiting, killing $CPKG_NAME now"
             kill -9 $Pid
-            rm -f $CPID_FILE
-            echo "$CPKG_NAME Shutdown"
          fi
       done
       rm -f $CPID_FILE
+      echo "$CPKG_NAME Shutdown"
 fi
       
 sleep 2
@@ -270,11 +268,10 @@ if [ -f $SPID_FILE ]; then
          if [ $i = 45 ]; then
             echo -n "Tired of waiting, killing $SPKG_NAME now"
             kill -9 $Pid
-            rm -f $SPID_FILE
-            echo "$SPKG_NAME Shutdown"
          fi
       done
       rm -f $SPID_FILE
+      echo "$SPKG_NAME Shutdown"
 fi
       
 sleep 2
@@ -303,11 +300,10 @@ if [ -f $HPID_FILE ]; then
          if [ $i = 45 ]; then
             echo -n "Tired of waiting, killing $HPKG_NAME now"
             kill -9 $Pid
-            rm -f $HPID_FILE
-            echo "$HPKG_NAME Shutdown"
          fi
       done
       rm -f $HPID_FILE
+      echo "$HPKG_NAME Shutdown"
 fi
 sleep 2
 $python "$headdata"/Headphones.py --datadir "$headconfig" -d --pidfile $HPID_FILE
@@ -333,11 +329,10 @@ if [ -f $MPID_FILE ]; then
          if [ $i = 45 ]; then
             echo -n "Tired of waiting, killing $MPKG_NAME now"
             kill -9 $Pid
-            rm -f $MPID_FILE
-            echo "$MPKG_NAME Shutdown"
          fi
       done
       rm -f $MPID_FILE
+      echo "$MPKG_NAME Shutdown"
 
 fi
 sleep 2
