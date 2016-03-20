@@ -20,7 +20,7 @@
 
 if [ "$SABnzbd" == 1 ]; then
 
-sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $1}')
+sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $2}')
 sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`
 sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'`
 
@@ -79,13 +79,13 @@ if [ "$SABnzbd" == 1 ]; then
 
      wget "$sabpkg" -O "$sablcl"
             tar xvzf "$sablcl" 
-            cp -ru "$sabtmpdir"/* "$sabdata"
+            cp -r "$sabtmpdir"/* "$sabdata"
 	    rm -r "$sabtmpdir"
  
      elif [ ! -f "$sabdata"/SABnzbd.py ]; then
             wget "$sabpkg" -O "$sablcl"
             tar xvzf "$sablcl" 
-            cp -ru "$sabtmpdir"/* "$sabdata"
+            cp -r "$sabtmpdir"/* "$sabdata"
 	    rm -r "$sabtmpdir"
 
      else
