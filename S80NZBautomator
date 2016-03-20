@@ -24,17 +24,6 @@ sleep 2
 opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar
 sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
 fi
-###############################
-#get current SAB version number
-###############################
-
-if [ "$SABnzbd" == 1 ]; then
-
-sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $1}')
-sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`
-sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'`
-
-fi
 
 ###############################
 #create directories
@@ -67,33 +56,14 @@ fi
 ################################
 
 if [ "$SABnzbd" == 1 ]; then
-
-   if [ ! -d "$sabbackup" ]
-	then
-	mkdir "$sabbackup"
-   fi
-     
-   cd "$sabbackup"
-
-     if [ "$sablcl" != *.gz ]
-	then
-	rm -f "$sabbackup"/*
-
-     wget "$sabpkg" -O "$sablcl"
-            tar xvzf "$sablcl" 
-            cp -ru "$sabtmpdir"/* "$sabdata"
-	    rm -r "$sabtmpdir"
- 
-     elif [ ! -f "$sabdata"/SABnzbd.py ]; then
-            wget "$sabpkg" -O "$sablcl"
-            tar xvzf "$sablcl" 
-            cp -r "$sabtmpdir"/* "$sabdata"
-	    rm -r "$sabtmpdir"
-
-     else
-            echo "SAB Already up-to-date."
-sleep 2     
-     fi
+   if [ -d "$sabdata" ]; then
+	cd "$sabdata"
+	git pull https://github.com/sabnzbd/sabnzbd/releases
+	  else
+	git clone https://github.com/sabnzbd/sabnzbd/releases "$sabdata"
+	mkdir -p -m 777 "$sabconfig"
+    sleep 2
+    fi
 fi
 
 #################################
