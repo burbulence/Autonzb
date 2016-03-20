@@ -197,7 +197,7 @@ sleep 2
   if [ -f "$sabconfig" ]; then
 	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
 	else
-	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8090 -f "$sabconfig" 
+	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8085 -f "$sabconfig" 
         sleep 2
   fi
    else
