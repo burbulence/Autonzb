@@ -193,7 +193,14 @@ if [ "$SABnzbd" == 1 ]; then
       echo "$SABPKG_NAME Shutdown"
 	fi
 sleep 2
-	 $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" PYTHON_EGG_CACHE=/tmp
+
+	if [ -f "$sabconfig" ]
+			then
+			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
+			else
+			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8090 -f "$sabconfig" 
+                sleep 2
+        fi
    else
    echo "SABnzbd not Installed"
 fi
