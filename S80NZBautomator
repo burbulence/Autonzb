@@ -87,7 +87,7 @@ if [ "$SABnzbd" == 1 ]; then
      elif [ ! -f "$sabdata"/SABnzbd.py ]; then
             wget "$sabpkg" -O "$sablcl"
             tar xvzf "$sablcl" 
-            cp -ru "$sabtmpdir"/* "$sabdata"
+            cp -r "$sabtmpdir"/* "$sabdata"
 	    rm -r "$sabtmpdir"
 
      else
