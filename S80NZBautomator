@@ -89,9 +89,9 @@ if [ "$SABnzbd" == 1 ]; then
           rm -r "$sabtmpdir"  
   
      else  
-    fi echo "SAB Already up-to-date."  
+          echo "SAB Already up-to-date."  
 sleep 2            
-    
+    fi
 fi
 
 #################################
