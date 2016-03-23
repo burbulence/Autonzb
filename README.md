@@ -1,5 +1,5 @@
 # NSA-Autonzb
-This script will download and install SABNzbd, Couchpotato, SickRage, Headphones, and Mylar to your Zyxel NAS. It has been written to work with Entware-ng on an NSA325. It should work on other Zyxel Nas's as the do script worked on the 310 320 and 540 series. This script will install all required packages, and with minimal user input start up each service during boot of the nas or whenever the script is run.
+This script will download and install nzbget, Couchpotato, SickRage, Headphones, and Mylar to your Zyxel NAS. It has been written to work with Entware-ng on an NSA325. It should work on other Zyxel NAS's as the ffp script worked on the 310 320 and 540 series. This script will install all required packages, and with minimal user input start up each service during boot of the nas or whenever the script is run.
 
 Please see the forum thread for the script at http://forum.nas-central.org/viewtopic.php?f=249&t=10881 for more info
 
@@ -22,7 +22,7 @@ Config Folders /opt/usr/etc/config
 
 nzbget config folder /opt/share/nzbget
 
-SAB SickRage Couchpotato Headphones Mylar data folders /opt/share
+nzbget SickRage Couchpotato Headphones Mylar data folders /opt/share
 
 
 
