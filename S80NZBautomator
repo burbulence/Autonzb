@@ -21,21 +21,21 @@ if [ "$packageupdate" == 1 ]; then
 
 opkg update
 sleep 2
-opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar
+opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar par2cmdline
 sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
 fi
 ###############################  
 #get current SAB version number  
 ###############################  
   
-#if [ "$SABnzbd" == 1 ]; then  
+if [ "$SABnzbd" == 1 ]; then  
   
-#  sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $2}')  
-#  sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`  
-#  sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'` 
-#  mkdir -p -m 777 "$configdir"/sabnzbd
+  sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $2}')  
+  sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`  
+  sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'` 
+  mkdir -p -m 777 "$configdir"/sabnzbd
 
-#fi  
+fi  
 
 ###############################
 #create directories
@@ -65,33 +65,33 @@ fi
 #install Sabnzbd
 ################################
 
-#if [ "$SABnzbd" == 1 ]; then  
+if [ "$SABnzbd" == 1 ]; then  
 
-#   if [ ! -d "$sabbackup" ]; then  
-#	mkdir "$sabbackup" 
-#   fi  
+   if [ ! -d "$sabbackup" ]; then  
+	mkdir "$sabbackup" 
+   fi  
    
-#   cd "$sabbackup"  
+   cd "$sabbackup"  
       
-#    if [ "$sablcl" != *.gz ]; then  
-#     rm -f "$sabbackup"/*  
+    if [ "$sablcl" != *.gz ]; then  
+     rm -f "$sabbackup"/*  
     
-#        wget "$sabpkg" -O "$sablcl"  
-#           tar xvzf "$sablcl"   
-#           cp -r "$sabtmpdir"/* "$sabdata"  
-#           rm -r "$sabtmpdir"  
+        wget "$sabpkg" -O "$sablcl"  
+           tar xvzf "$sablcl"   
+           cp -r "$sabtmpdir"/* "$sabdata"  
+           rm -r "$sabtmpdir"  
            
-#         elif [ ! -f "$sabdata"/SABnzbd.py ]; then  
-#         wget "$sabpkg" -O "$sablcl"  
-#          tar xvzf "$sablcl"   
-#          cp -r "$sabtmpdir"/* "$sabdata"  
-#          rm -r "$sabtmpdir"  
+         elif [ ! -f "$sabdata"/SABnzbd.py ]; then  
+         wget "$sabpkg" -O "$sablcl"  
+          tar xvzf "$sablcl"   
+          cp -r "$sabtmpdir"/* "$sabdata"  
+          rm -r "$sabtmpdir"  
   
-#     else  
-#          echo "SAB Already up-to-date."  
-#sleep 2            
-#    fi
-#fi
+     else  
+          echo "SAB Already up-to-date."  
+sleep 2            
+    fi
+fi
 
 #################################
 #Install Couchpoato
@@ -171,37 +171,37 @@ fi
 #################################
 #Start all programs
 #################################
-#if [ "$SABnzbd" == 1 ]; then
+if [ "$SABnzbd" == 1 ]; then
 
-#    if [ -f $SABPID_FILE ]; then
+    if [ -f $SABPID_FILE ]; then
       #grab pid from pid file
-#      Pid=$(/bin/cat $SABPID_FILE)
-#      i=0
-#      kill $Pid
-#      echo -n " Waiting for $SABPKG_NAME to shut down: "
-#      while [ -d /proc/$Pid ]; do
-#         sleep 1
-#         let i+=1
-#         /bin/echo -n "$i, "
-#         if [ $i = 45 ]; then
-#            echo -n "Tired of waiting, killing $SABPKG_NAME now"
-#            kill -9 $Pid
-#         fi
-#      done
-#      rm -f $SABPID_FILE
-#      echo "$SABPKG_NAME Shutdown"
-#    fi
-#sleep 2
+      Pid=$(/bin/cat $SABPID_FILE)
+      i=0
+      kill $Pid
+      echo -n " Waiting for $SABPKG_NAME to shut down: "
+      while [ -d /proc/$Pid ]; do
+         sleep 1
+         let i+=1
+         /bin/echo -n "$i, "
+         if [ $i = 45 ]; then
+            echo -n "Tired of waiting, killing $SABPKG_NAME now"
+            kill -9 $Pid
+         fi
+      done
+      rm -f $SABPID_FILE
+      echo "$SABPKG_NAME Shutdown"
+    fi
+sleep 2
 
-#  if [ -f "$sabconfig" ]; then
-#	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
-#	else
-#	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8085 -f "$sabconfig" 
-#        sleep 2
-#  fi
-#   else
-#   echo "SABnzbd not Installed"
-#fi
+  if [ -f "$sabconfig" ]; then
+	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
+	else
+	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8085 -f "$sabconfig" 
+        sleep 2
+  fi
+   else
+   echo "SABnzbd not Installed"
+fi
 
 if [ "$Nzbget" == 1 ]; then
 
