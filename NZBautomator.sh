@@ -14,19 +14,13 @@
 ############################################################################################################
 ######################################Do not edit the lines below##########################################
 
-#if [ "$bindmount" == 1 ];then
-#python="/usr/bin/python"
-#else
-#python="/ffp/bin/python"
-#fi
-
 ###############################
 #get current SAB version number
 ###############################
 
 if [ "$SABnzbd" == 1 ]; then
 
-sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $1}')
+sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $2}')
 sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`
 sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'`
 
@@ -53,17 +47,8 @@ if [ ! -d "$sabdata" ]
 		sab_port=`grep -w -m 1 https_port $sabconfig | cut -d ' ' -f 3 | sed s/'""'//`;
 		else
 		sab_port=`grep -w -m 1 port $sabconfig | cut -d ' ' -f 3 | sed s/'""'//`;
-		fi
+                fi
 fi
-
-#########################################################################################################################
-#bindmount python
-#this binds ffp/bin python to usr/bin python - used by postprocessing scripts so no manual updating of the hashbang is needed
-#########################################################################################################################
-#
-#if [ "$bindmount" == 1 ];then
-#   mount --bind /ffp/bin/python2.7 /usr/bin/python
-#fi
 
 ################################
 #install SSL Certificates
