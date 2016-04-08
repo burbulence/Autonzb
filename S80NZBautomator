@@ -21,7 +21,11 @@ if [ "$packageupdate" == 1 ]; then
 
 opkg update
 sleep 2
-opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar par2cmdline
+opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar
+ if [ "$SABnzbd" == 1 ] && [ "$packageupdate" == 1 ] ; then
+    opkg install par2cmdline
+  fi 
+  
 sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
 fi
 ###############################  
@@ -56,7 +60,7 @@ fi
 #install nzbget
 ################################
 
-if [ "$Nzbget" == 1 ] && [ ! -f /opt/bin/nzbget ]; then
+if [ "$Nzbget" == 1 ] && [ ! -d /opt/bin/nzbget ]; then
    opkg install nzbget
   fi
 fi
