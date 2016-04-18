@@ -62,7 +62,6 @@ fi
 
 if [ "$Nzbget" == 1 ] && [ ! -d /opt/bin/nzbget ]; then
    opkg install nzbget
-  fi
 fi
 
 ################################
