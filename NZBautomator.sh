@@ -2,7 +2,7 @@
 . /ffp/start/config.cfg
 
 ####################################################################################################
-#Version 0.98
+#Version 0.99
 #############
 # This script 'should' download install and configure your folder structure to enable SABnzbd, 
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
