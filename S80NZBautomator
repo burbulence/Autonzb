@@ -22,7 +22,7 @@ if [ "$packageupdate" == 1 ]; then
 opkg update
 sleep 2
 opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar libstdcpp
- if [ "$SABnzbd" == 1 ] && [ "$packageupdate" == 1 ] ; then
+ if [ "$SABnzbd" == 1 ] && [ "$packageupdate" == 1 ]; then
     opkg install par2cmdline
   fi 
   
