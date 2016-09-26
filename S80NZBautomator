@@ -2,7 +2,7 @@
 . /opt/etc/autonzb.conf
 
 ####################################################################################################
-#Entware-ng Version S80.1
+#Entware-ng Version S80.2
 ##############################
 # This script 'should' download install and configure your folder structure to enable SABnzbd, 
 # CouchPotato Sickbeard Headphones and NzbtoMedia scripts. you can set which of them to install via 
@@ -17,16 +17,16 @@
 ###############################
 #install packages
 ###############################
+
 if [ "$packageupdate" == 1 ]; then
 
 opkg update
+
 sleep 2
-opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar libstdcpp
- if [ "$SABnzbd" == 1 ] && [ "$packageupdate" == 1 ]; then
-    opkg install par2cmdline
-  fi 
-  
+
+opkg install python python-pip curl libcurl pyopenssl python-cheetah zlib wget unrar rtmpdump pkg-config openssh-client make libxslt libffi libiconv-full libgpg-error libgcrypt ncurses-bin git git-http gcc bzip2 autoconf automake binutils unrar
 sed -i 's/packageupdate="1"/\packageupdate="0"/' /opt/etc/autonzb.conf
+
 fi
 ###############################  
 #get current SAB version number  
@@ -36,8 +36,7 @@ if [ "$SABnzbd" == 1 ]; then
   
   sabpkg=$(wget http://sabnzbd.org/download/ -O - | grep "Linux" | awk -F'"' '{print $2}' | awk -F'/download' '{print $2}')  
   sablcl=`echo $sabpkg | sed 's/.*\(SAB.*\.gz\).*/\1/'`  
-  sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'` 
-  mkdir -p -m 777 "$configdir"/sabnzbd
+  sabtmpdir=`printf "SABnzbd" && echo $sabpkg | sed 's/.*SABnzbd\(.*\)-.*/\1/'`  
 
 fi  
 
@@ -47,8 +46,9 @@ fi
 
 cd "$useradmin"
 
-if [ ! -d "$configdir"/autonzb ]; then
-            mkdir -p -m 777 "$configdir"/autonzb
+if [ ! -d "$sabdata" ]; then
+            mkdir -p -m 777 "$sabdata"
+            mkdir -p -m 777 "$configdir"/sabnzbd
             mkdir -p -m 777 "$useradmin"/download/complete/movie 
             mkdir -p -m 777 "$useradmin"/download/complete/tv
             mkdir -p -m 777 "$useradmin"/download/incomplete
@@ -60,8 +60,12 @@ fi
 #install nzbget
 ################################
 
-if [ "$Nzbget" == 1 ] && [ ! -d /opt/bin/nzbget ]; then
+if [ "$Nzbget" == 1 ] && [ ! -f /opt/bin/nzbget ]; then
    opkg install nzbget
+ 
+elif [ "$packageupdate" == 1 ]; then
+   opkg install nzbget
+
 fi
 
 ################################
@@ -70,30 +74,31 @@ fi
 
 if [ "$SABnzbd" == 1 ]; then  
 
-   if [ ! -d "$sabbackup" ]; then  
+   if [ ! -d "$sabbackup" ]  
+	then  
 	mkdir "$sabbackup" 
    fi  
    
    cd "$sabbackup"  
       
-    if [ "$sablcl" != *.gz ]; then  
-     rm -f "$sabbackup"/*  
+     if [ "$sablcl" != *.gz ]; then  
+        rm -f "$sabbackup"/*  
     
         wget "$sabpkg" -O "$sablcl"  
-           tar xvzf "$sablcl"   
-           cp -r "$sabtmpdir"/* "$sabdata"  
-           rm -r "$sabtmpdir"  
-           
-         elif [ ! -f "$sabdata"/SABnzbd.py ]; then  
-         wget "$sabpkg" -O "$sablcl"  
           tar xvzf "$sablcl"   
           cp -r "$sabtmpdir"/* "$sabdata"  
           rm -r "$sabtmpdir"  
+           
+        elif [ ! -f "$sabdata"/SABnzbd.py ]; then  
+          wget "$sabpkg" -O "$sablcl"  
+          tar xvzf "$sablcl"   
+          cp -r "$sabtmpdir"/* "$sabdata"  
+	      rm -r "$sabtmpdir"  
   
      else  
-          echo "SAB Already up-to-date."  
+          echo "SAB Already up-to-date." 
 sleep 2            
-    fi
+     fi
 fi
 
 #################################
@@ -174,9 +179,10 @@ fi
 #################################
 #Start all programs
 #################################
+
 if [ "$SABnzbd" == 1 ]; then
 
-    if [ -f $SABPID_FILE ]; then
+	if [ -f $SABPID_FILE ]; then
       #grab pid from pid file
       Pid=$(/bin/cat $SABPID_FILE)
       i=0
@@ -192,40 +198,41 @@ if [ "$SABnzbd" == 1 ]; then
          fi
       done
       rm -f $SABPID_FILE
+
       echo "$SABPKG_NAME Shutdown"
-    fi
-sleep 2
+	fi
+
+  sleep 2
 
   if [ -f "$sabconfig" ]; then
-	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
-	else
-	PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8085 -f "$sabconfig" 
-        sleep 2
+			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -f "$sabconfig" 
+			else
+			PYTHON_EGG_CACHE=/tmp $python "$sabdata"/SABnzbd.py -b 0 -d -s 0.0.0.0:8090 -f "$sabconfig" 
+            sleep 2
   fi
-   else
+  else
+
    echo "SABnzbd not Installed"
 fi
 
 if [ "$Nzbget" == 1 ]; then
 
-  if [ -f $NPID_FILE ]; then   #/usr/local/zy-pkgs/opt/usr/etc/config/nzbget
-      #grab pid from pid file
-      Pid=$(/bin/cat $NPID_FILE)
-      i=0
-      sh $init/S75nzbget stop
-         while [ -d /proc/$Pid ]; do
-         sleep 1
-         let i+=1
-         /bin/echo -n "$i, "
-      done
-      rm -f $NPID_FILE
-  fi
+  sh $init/S75nzbget stop
+
+ sleep 2
+
+if [ "$packageupdate" == 1 ]; then
+ 
+ opkg install nzbget
+
+fi
+
  sleep 2
 
  sh $init/S75nzbget start
 
 fi
-      
+    
 sleep 2
 
 if [ "$CouchPotato" == 1 ]; then
@@ -246,14 +253,17 @@ if [ -f $CPID_FILE ]; then
          fi
       done
       rm -f $CPID_FILE
+
       echo "$CPKG_NAME Shutdown"
 fi
       
 sleep 2
 
  $python "$couchdata"/CouchPotato.py --daemon --data_dir $CCONFIG_DIR --config $CCONFIG_DIR/settings.conf --pid_file $CPID_FILE
+
    echo -n "$CPKG_NAME Started"
       else
+
    echo "Couchpotato not Installed"
    fi
 
@@ -277,6 +287,7 @@ if [ -f $SPID_FILE ]; then
          fi
       done
       rm -f $SPID_FILE
+
       echo "$SPKG_NAME Shutdown"
 fi
       
@@ -284,8 +295,10 @@ sleep 2
 
 
    $python "$sickdata"/SickBeard.py --datadir "$sickconfig" --config "$sickconfig"/config.ini -d --pidfile $SPID_FILE
+
 echo -n "$SPKG_NAME Started"   
       else
+
    echo "SickRage not Installed"
    fi
 
@@ -309,12 +322,15 @@ if [ -f $HPID_FILE ]; then
          fi
       done
       rm -f $HPID_FILE
+
       echo "$HPKG_NAME Shutdown"
 fi
 sleep 2
 $python "$headdata"/Headphones.py --datadir "$headconfig" -d --pidfile $HPID_FILE
+
    echo -n "$HPKG_NAME Started"
       else
+
    echo "Headphones not Installed"
 fi
 
@@ -338,6 +354,7 @@ if [ -f $MPID_FILE ]; then
          fi
       done
       rm -f $MPID_FILE
+
       echo "$MPKG_NAME Shutdown"
 
 fi
@@ -346,5 +363,6 @@ sleep 2
    $python "$mylardata"/Mylar.py --datadir "$mylarconfig" --config "$mylarconfig"/config.ini  -d --pidfile $MPID_FILE
    echo -n "$MPKG_NAME Started"
       else
+
    echo "Mylar not Installed"
 fi
